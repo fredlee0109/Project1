@@ -33,6 +33,10 @@ func nextCellStates(currentStates: [[Bool]]) -> [[Bool]] {
 
 class LRUCache<K:Hashable, V> {
     private var capacity: Int
+    private var count = 0
+    private var cache = [K:V]()
+    private var LRUDic = [Int:K]()
+    private var temp = 1
 
     init(capacity: Int) {
         self.capacity = capacity
@@ -44,7 +48,9 @@ class LRUCache<K:Hashable, V> {
         /*
         *  Get the value of the key if the key exists in the cache, otherwise return nil.
         */
-
+        if (self.cache[k] != nil) {
+            return cache[k]
+        }
         return nil
     }
 
@@ -56,5 +62,15 @@ class LRUCache<K:Hashable, V> {
         * When the cache reached its capacity, it should invalidate the 
         * least recently used item before inserting a new item.
         */
+        if (count >= capacity) {
+            cache.removeValueForKey(LRUDic[1]!)
+            count--
+        }
+        if (self.cache[k] == nil) {
+            self.cache[k] = v
+            LRUDic[temp] = k
+            count++
+            temp++
+        }
     }
 }
